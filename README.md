@@ -41,13 +41,6 @@ Enable/disable the Akamai replication event handler and configure which resource
 
 Configure the Akamai network, hostname, and credentials (access token, client token, client secret).
 
-## Job Cancellation Event Handlers
-
-If the Akamai purge request fails, the underlying Sling job will be cancelled and an event will be generated containing the job topic and affected page/asset path.  
-
-Applications using this bundle may register services implementing the `com.avionos.aem.akamai.purgesurgeon.job.delegate.AkamaiPurgeJobCancelledEventHandlerDelegate` interface to provide additional error/failure handling behavior (e.g. email notification).  These services will be automatically bound to the default 
-Akamai purge job cancellation event handler by the framework.
-
 ## URL Externalizers
 
 TODO
