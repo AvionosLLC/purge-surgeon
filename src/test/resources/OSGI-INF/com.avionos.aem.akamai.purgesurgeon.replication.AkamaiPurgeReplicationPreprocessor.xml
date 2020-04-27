@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component name="com.avionos.aem.akamai.purgesurgeon.replication.AkamaiPurgeReplicationPreprocessor">
+        <implementation class="com.avionos.aem.akamai.purgesurgeon.replication.AkamaiPurgeReplicationPreprocessor" />
+
+        <service>
+            <provide interface="com.day.cq.replication.Preprocessor"/>
+        </service>
+
+        <reference name="akamaiUrlExternalizer" interface="com.avionos.aem.akamai.purgesurgeon.externalizer.AkamaiUrlExternalizer" field="akamaiUrlExternalizer"/>
+        <reference name="jobManager" interface="org.apache.sling.event.jobs.JobManager" field="jobManager"/>
+        <reference name="resourceResolverFactory" interface="org.apache.sling.api.resource.ResourceResolverFactory" field="resourceResolverFactory"/>
+
+        <property name="includedPaths" type="String">/content/avionos
+/content/test</property>
+        <property name="excludedPaths" type="String">/content/dam</property>
+        <property name="delay" type="Integer" value="60"/>
+        <property name="enabled" type="Boolean" value="true"/>
+    </scr:component>
+</components>
