@@ -12,47 +12,47 @@ class MockJobManager implements JobManager {
 
     @Override
     Statistics getStatistics() {
-        return null
+        null
     }
 
     @Override
     Iterable<TopicStatistics> getTopicStatistics() {
-        return null
+        null
     }
 
     @Override
     Queue getQueue(String s) {
-        return null
+        null
     }
 
     @Override
     Iterable<Queue> getQueues() {
-        return null
+        null
     }
 
     @Override
     Job addJob(String s, Map<String, Object> map) {
-        return null
+        null
     }
 
     @Override
     Job getJobById(String s) {
-        return null
+        null
     }
 
     @Override
     boolean removeJobById(String s) {
-        return false
+        false
     }
 
     @Override
     Job getJob(String s, Map<String, Object> map) {
-        return null
+        null
     }
 
     @Override
     Collection<Job> findJobs(QueryType queryType, String s, long l, Map<String, Object>... maps) {
-        return null
+        null
     }
 
     @Override
@@ -62,21 +62,21 @@ class MockJobManager implements JobManager {
 
     @Override
     Job retryJobById(String s) {
-        return null
+        null
     }
 
     @Override
     JobBuilder createJob(String s) {
-        return null
+        null
     }
 
     @Override
     Collection<ScheduledJobInfo> getScheduledJobs() {
-        return null
+        null
     }
 
     @Override
     Collection<ScheduledJobInfo> getScheduledJobs(String s, long l, Map<String, Object>... maps) {
-        return null
+        null
     }
 }

@@ -6,7 +6,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 @ObjectClassDefinition(name = "Akamai Purge Replication Preprocessor Configuration")
 public @interface AkamaiPurgeReplicationPreprocessorConfiguration {
 
-    @AttributeDefinition(name = "Enabled?", description = "Check to enable Akamai purge for replication events.")
+    @AttributeDefinition(name = "Enabled?", description = "Check to enable Akamai purge replication preprocessor.")
     boolean enabled() default false;
 
     @AttributeDefinition(name = "Included Paths", description = "List of paths that should be purged.")
@@ -16,5 +16,5 @@ public @interface AkamaiPurgeReplicationPreprocessorConfiguration {
     String[] excludedPaths();
 
     @AttributeDefinition(name = "Delay", description = "Delay in seconds before queueing purge requests.")
-    int delay() default 60;
+    int delay() default 30;
 }

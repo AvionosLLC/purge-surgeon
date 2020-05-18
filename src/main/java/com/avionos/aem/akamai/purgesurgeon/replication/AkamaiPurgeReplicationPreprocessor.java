@@ -45,8 +45,6 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    private static final String SUBSERVICE_NAME = "Akamai";
-
     @Reference
     private JobManager jobManager;
 
@@ -184,7 +182,7 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
             return Optional.ofNullable(akamaiUrlExternalizer)
                 .map(externalizer -> externalizer.getUrls(resource))
                 .orElse(Collections.singletonList(externalizer.externalLink(resourceResolver, Externalizer.PUBLISH,
-                    resourceResolver.map(resource.getPath()))));
+                    resource.getPath())));
         } catch (LoginException e) {
             // re-throw as runtime exception to propagate up to the event framework
             throw new ReplicationException("error authenticating resource resolver", e);
