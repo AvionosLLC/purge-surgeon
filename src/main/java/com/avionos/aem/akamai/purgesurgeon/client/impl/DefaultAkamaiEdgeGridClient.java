@@ -52,7 +52,7 @@ public final class DefaultAkamaiEdgeGridClient implements AkamaiEdgeGridClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultAkamaiEdgeGridClient.class);
 
-    private volatile CloseableHttpClient httpClient;
+    protected volatile CloseableHttpClient httpClient;
 
     private volatile String network;
 

@@ -35,7 +35,7 @@ Bundle Version | AEM Version(s)
 
 ## Configuration
 
-### Akamai Purge Replication Event Handler Configuration
+### Akamai Purge Replication Preprocessor Configuration
 
 Enable/disable the Akamai replication preprocessor and configure which resource paths should be purged and/or excluded from purging.
 
@@ -49,9 +49,9 @@ Projects utilizing the Purge Surgeon may provide a service implementing the `com
 
 ## Edge Grid Client API
 
-The Edge Grid Client API can be used without enabling (or in addition to) replication preprocessing to purge content from Akamai edge servers by CP code or cache tag.
+The Purge Surgeon API can be used without enabling (or in addition to) replication preprocessing to purge content from Akamai edge servers by CP code or cache tag.
 
-Using the [AEM Groovy Console](https://github.com/icfnext/aem-groovy-console), executing the following script would purge edge content for the CP codes "123" and "456":
+For example, using the [AEM Groovy Console](https://github.com/icfnext/aem-groovy-console), executing the following script would purge edge content for the CP codes "123" and "456":
 
 ```groovy
 def akamaiEdgeGridClient = getService("com.avionos.aem.akamai.purgesurgeon.client.AkamaiEdgeGridClient")
