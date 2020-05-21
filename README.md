@@ -57,7 +57,11 @@ For example, using the [AEM Groovy Console](https://github.com/icfnext/aem-groov
 def akamaiEdgeGridClient = getService("com.avionos.aem.akamai.purgesurgeon.client.AkamaiEdgeGridClient")
 
 akamaiEdgeGridClient.invalidateCpCodes([123, 456])
-```  
+```
+
+## Javadoc
+
+https://javadoc.io/doc/com.avionos.aem.akamai/purge-surgeon/latest/index.html
 
 ## Versioning
 
