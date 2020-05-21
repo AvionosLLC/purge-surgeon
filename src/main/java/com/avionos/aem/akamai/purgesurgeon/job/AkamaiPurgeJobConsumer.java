@@ -39,7 +39,7 @@ public final class AkamaiPurgeJobConsumer implements JobConsumer {
     private AkamaiEdgeGridClient edgeGridClient;
 
     /**
-     * Process the indexing job via the Akamai Purge service.
+     * Process the purge job via the Akamai Purge service.
      *
      * @param job purge job
      * @return OK job result if successful, CANCEL result if unsuccessful
