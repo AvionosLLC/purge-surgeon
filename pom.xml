@@ -12,7 +12,7 @@
         OSGi bundle for Adobe Experience Manager (AEM) providing a replication preprocessor and Akamai Fast Purge API
         client to purge cached content from Akamai when content is replicated from AEM.
     </description>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
