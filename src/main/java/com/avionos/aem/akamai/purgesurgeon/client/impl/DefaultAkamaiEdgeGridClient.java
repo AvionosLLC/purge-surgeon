@@ -46,11 +46,13 @@ import java.util.Map;
 @ServiceVendor("Avionos")
 public final class DefaultAkamaiEdgeGridClient implements AkamaiEdgeGridClient {
 
+    private static final String MIME_TYPE = ContentType.APPLICATION_JSON.getMimeType();
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultAkamaiEdgeGridClient.class);
 
-    private volatile CloseableHttpClient httpClient;
+    protected volatile CloseableHttpClient httpClient;
 
     private volatile String network;
 
@@ -142,12 +144,10 @@ public final class DefaultAkamaiEdgeGridClient implements AkamaiEdgeGridClient {
 
         LOG.info("sending {} request to URI : {} with JSON entity : {}", purgeAction, uri, json);
 
-        final String mimeType = ContentType.APPLICATION_JSON.getMimeType();
-
         final HttpUriRequest request = RequestBuilder.post(uri)
             .setEntity(entity)
-            .addHeader(HttpHeaders.ACCEPT, mimeType)
-            .addHeader(HttpHeaders.CONTENT_TYPE, mimeType)
+            .addHeader(HttpHeaders.ACCEPT, MIME_TYPE)
+            .addHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
             .build();
 
         try (final CloseableHttpResponse response = httpClient.execute(request)) {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component name="com.avionos.aem.akamai.purgesurgeon.client.impl.DefaultAkamaiEdgeGridClient">
+        <implementation class="com.avionos.aem.akamai.purgesurgeon.client.impl.DefaultAkamaiEdgeGridClient" />
+        <service>
+            <provide interface="com.avionos.aem.akamai.purgesurgeon.client.AkamaiEdgeGridClient"/>
+        </service>
+        <property name="network" type="String">production</property>
+        <property name="hostname" type="String">localhost:8001</property>
+        <property name="accessToken" type="String">123</property>
+        <property name="clientToken" type="String">123</property>
+        <property name="clientSecret" type="String">123</property>
+        <property name="connectionRequestTimeout" type="Integer" value="1000"/>
+        <property name="connectTimeout" type="Integer" value="3000"/>
+        <property name="socketTimeout" type="Integer" value="30000"/>
+        <property name="maxTotalConnections" type="Integer" value="25"/>
+        <property name="maxConnectionsPerRoute" type="Integer" value="25"/>
+    </scr:component>
+</components>

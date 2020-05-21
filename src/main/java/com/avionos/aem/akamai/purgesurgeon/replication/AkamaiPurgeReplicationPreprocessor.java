@@ -2,13 +2,13 @@ package com.avionos.aem.akamai.purgesurgeon.replication;
 
 import com.avionos.aem.akamai.purgesurgeon.externalizer.AkamaiUrlExternalizer;
 import com.avionos.aem.akamai.purgesurgeon.job.AkamaiPurgeJobConsumer;
+import com.day.cq.commons.Externalizer;
 import com.day.cq.replication.Preprocessor;
 import com.day.cq.replication.ReplicationAction;
 import com.day.cq.replication.ReplicationActionType;
 import com.day.cq.replication.ReplicationException;
 import com.day.cq.replication.ReplicationOptions;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.SlingConstants;
 import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -19,6 +19,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,16 +45,17 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    private static final String SUBSERVICE_NAME = "Akamai";
-
     @Reference
     private JobManager jobManager;
 
-    @Reference
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private AkamaiUrlExternalizer akamaiUrlExternalizer;
 
     @Reference
     private ResourceResolverFactory resourceResolverFactory;
+
+    @Reference
+    private Externalizer externalizer;
 
     private volatile boolean enabled;
 
@@ -111,11 +113,12 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
      * @param paths paths configuration property
      * @return list of non-empty paths
      */
-    private List<String> getConfiguredPaths(final String[] paths) {
+    protected List<String> getConfiguredPaths(final String[] paths) {
         return Optional.ofNullable(paths)
             .map(Arrays :: stream)
             .orElseGet(Stream :: empty)
             .filter(StringUtils :: isNotBlank)
+            .distinct()
             .collect(Collectors.toList());
     }
 
@@ -125,7 +128,7 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
      * @param path replicated page path
      * @return true if path is included, false if not
      */
-    private boolean isIncluded(final String path) {
+    protected boolean isIncluded(final String path) {
         return includedPaths.stream().anyMatch(path :: startsWith) &&
             excludedPaths.stream().noneMatch(path :: startsWith);
     }
@@ -135,8 +138,9 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
      *
      * @param topic job topic
      * @param path page path
+     * @throws ReplicationException if unable to authenticate resource resolver
      */
-    private void addJob(final String topic, final String path) {
+    private void addJob(final String topic, final String path) throws ReplicationException {
         if (delay > 0) {
             final ScheduledJobInfo scheduledJobInfo = jobManager.createJob(topic)
                 .properties(getJobProperties(path))
@@ -158,16 +162,30 @@ public final class AkamaiPurgeReplicationPreprocessor implements Preprocessor {
      *
      * @param path page path
      * @return job properties
+     * @throws ReplicationException if unable to authenticate resource resolver
      */
-    private Map<String, Object> getJobProperties(final String path) {
+    private Map<String, Object> getJobProperties(final String path) throws ReplicationException {
+        return Collections.singletonMap(AkamaiPurgeJobConsumer.PROPERTY_URLS, getUrls(path).toArray(new String[0]));
+    }
+
+    /**
+     * Get the externalized URLs for the given resource path.
+     *
+     * @param path resource path
+     * @return list of externalized URLs
+     * @throws ReplicationException if unable to authenticate resource resolver
+     */
+    private List<String> getUrls(final String path) throws ReplicationException {
         try (final ResourceResolver resourceResolver = resourceResolverFactory.getServiceResourceResolver(null)) {
             final Resource resource = resourceResolver.getResource(path);
 
-            return Collections.singletonMap(AkamaiPurgeJobConsumer.PROPERTY_URLS,
-                akamaiUrlExternalizer.getUrls(resource).toArray(new String[0]));
+            return Optional.ofNullable(akamaiUrlExternalizer)
+                .map(externalizer -> externalizer.getUrls(resource))
+                .orElse(Collections.singletonList(externalizer.externalLink(resourceResolver, Externalizer.PUBLISH,
+                    resource.getPath())));
         } catch (LoginException e) {
             // re-throw as runtime exception to propagate up to the event framework
-            throw new RuntimeException(e);
+            throw new ReplicationException("error authenticating resource resolver", e);
         }
     }
 
