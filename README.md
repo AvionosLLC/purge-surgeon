@@ -18,7 +18,7 @@ Bundle Version | AEM Version(s)
 
 ## Installation
 
-1. Add the bundle as a dependency to an existing AEM project:
+1. Add the following dependencies to your AEM project:
 
 ```xml
 <dependency>
@@ -27,7 +27,21 @@ Bundle Version | AEM Version(s)
     <version>0.1.0</version>
     <scope>provided</scope>
 </dependency>
+<dependency>
+    <groupId>com.akamai.edgegrid</groupId>
+    <artifactId>edgegrid-signer-core</artifactId>
+    <version>4.0.0</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>com.akamai.edgegrid</groupId>
+    <artifactId>edgegrid-signer-apache-http-client</artifactId>
+    <version>4.0.0</version>
+    <scope>provided</scope>
+</dependency>
 ```
+
+All of the above OSGi bundles need to be installed in AEM by embedding in the [Content Package Maven Plugin](https://docs.adobe.com/content/help/en/experience-manager-65/developing/devtools/vlt-mavenplugin.html) (or installing manually). 
 
 2. Add a [service user mapping](https://docs.adobe.com/content/help/en/experience-manager-65/administering/security/security-service-users.html#ServiceUsersandMappings) for the `purge-surgeon` bundle.
 
